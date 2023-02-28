@@ -1,27 +1,27 @@
 const inquirer = require('inquirer');
-// const mysql = require('mysql2');
-// const cTable = require('console.table');
+const mysql = require('mysql2');
+const cTable = require('console.table');
 
 
 
-// // connectiong to sql db
-// const db = mysql.createConnection(
-//   {
-//   host: 'localhost',
-//     // MySQL username,
-//   user: 'root',
-//     // MySQL password - password protected by .env
-//   password: 'Goochymama69420!',
-//   database: 'employee_db'
-//   },
-//   console.log(`Connected to the courses_db database.`),
-// );
+// connectiong to sql db
+const db = mysql.createConnection(
+  {
+  host: 'localhost',
+    // MySQL username,
+  user: 'root',
+    // MySQL password - password protected by .env
+  password: 'Goochymama69420!',
+  database: 'employee_db'
+  },
+  console.log(`Connected to the courses_db database.`),
+);
 
-// db.connect(function(error) {
-//   if(error) throw error;
-//   console.log("connected at " + db.threadID+"\n");
-//   promptUser();
-// })
+db.connect(function(error) {
+  if(error) throw error;
+  console.log("connected at " + db.threadID+"\n");
+  promptUser();
+})
 
 
 // var to be able to call the prompt. Gives choices of all options and if statments on what happens when a choic is chosen.
@@ -29,8 +29,16 @@ const promptUser = () => {
   return inquirer.prompt ([
     {
       type: 'list',
+      name: 'choices',
       message: 'Please select an option',
-      choices:['View all departments','View all roles', 'View all employees', 'Add a department', 'Add a role','Add an employee','Update an employee role','quit']
+      choices:['View all departments',
+                'View all roles', 
+                'View all employees',
+                'Add a department', 
+                'Add a role',
+                'Add an employee',
+                'Update an employee role',
+                'quit']
     }
   ])
   .then((answers)=>{
@@ -62,5 +70,14 @@ const promptUser = () => {
   })
 };
 
-promptUser();
+function showDepartments(){
+ const mySql = `SELECT department.id AS id, department.name AS name FROM department`;
+
+ db.query(mySql,(err,results) => {
+  if(err) throw err;
+  console.log('Showing all departments');
+  console.log(results);
+  promptUser();
+ })
+}
 
