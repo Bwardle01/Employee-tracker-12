@@ -70,6 +70,7 @@ const promptUser = () => {
   })
 };
 
+// will show all departments
 function showDepartments(){
  const mySql = `SELECT department.id AS id, department.name AS name FROM department`;
 
@@ -79,5 +80,18 @@ function showDepartments(){
   console.log(results);
   promptUser();
  })
-}
+};
 
+// will show all roles 
+function showRoles {
+ const mysql = `SELECT role.id, role.title, department.name AS department, role.salary FROM role
+                INNER JOIN department ON role.department_id = department.id`;
+
+  db.query(mySql,(err,results) => {
+    if(err) throw err;
+     console.log('Showing all Roles');
+      console.log(results);
+      promptUser();
+  })
+ 
+};
